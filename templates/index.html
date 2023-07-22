@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Premier League Countdown Timer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url("https://assets.goal.com/v3/assets/bltcc7a7ffd2fbf71f5/blt7b4badbce95e908d/64661d76109bcc9d94ea8e2c/Man_City_Organisation.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        #countdownTimer {
+            border: 2px solid #ccc;
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a semi-transparent background color for the content */
+        }
+
+        #premierLeagueLogo {
+            max-width: 100%;
+            max-height: 200px; /* Adjust the height as needed */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="countdownTimer">
+        <img id="premierLeagueLogo" src="https://assets.turbologo.com/blog/en/2020/01/19084653/Premier-League-symbol-958x575.png" alt="Premier League Logo">
+        <h1>Premier League Countdown Timer</h1>
+        <div id="timerDisplay"></div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            fetch('/countdown')
+                .then(response => response.json())
+                .then(data => {
+                    const remainingTime = data.remaining_time;
+                    const timerDisplay = document.getElementById('timerDisplay');
+
+                    if (remainingTime <= 0) {
+                        timerDisplay.innerHTML = "Match Has Started!!";
+                    } else {
+                        const hours = Math.floor(remainingTime / 3600);
+                        const minutes = Math.floor((remainingTime % 3600) / 60);
+                        const seconds = remainingTime % 60;
+
+                        const formattedTime = `${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
+                        timerDisplay.innerHTML = `Time remaining: ${formattedTime}`;
+                    }
+                });
+        }
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
